@@ -1,0 +1,46 @@
+.node {
+    cursor: pointer;
+}
+
+.node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 3px;
+}
+
+.node text {
+    font: 12px sans-serif;
+}
+
+.node text.header {
+    font-weight: bold;
+}
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
+}
+
+rect.node-frame {
+    stroke: steelblue;
+    stroke-width: 2px;
+    fill: #eee;
+}
+
+rect.plot-background {
+    fill: #fff;
+}
+
+.node .tick {
+    stroke: darkgrey;
+}
+
+.axis path {
+    fill: none;
+    stroke: #000;
+}
+.axis line {
+    fill: none;
+    stroke: lightgrey;
+}

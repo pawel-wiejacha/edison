@@ -72,4 +72,16 @@ class SamplesTest extends SmartSpec {
     updated2.min shouldBe twoSamples10_20.min
     updated2.max shouldBe twoSamples10_20.max
   }
+
+  it can "contain non-unique entries" in {
+    val twoSamples = emptySamples.add(1 -> 10.0).add(1 -> 10.0)
+    twoSamples.size shouldBe 2
+    twoSamples.mean.get shouldBe 10.0
+  }
+
+  it can "have entries with the same value but different result" in {
+    val twoSamples = emptySamples.add(1 -> 10.0).add(1 -> 20.0)
+    twoSamples.size shouldBe 2
+    twoSamples.mean.get shouldBe 15.0
+  }
 }

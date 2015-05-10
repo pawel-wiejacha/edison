@@ -1,7 +1,7 @@
 package edison.util
 
-import org.scalatest.{ OneInstancePerTest, FlatSpec, Matchers }
+import org.scalatest.{OptionValues, OneInstancePerTest, FlatSpec, Matchers}
 
-abstract class SmartSpec extends FlatSpec with Matchers with OneInstancePerTest {
+abstract class SmartSpec extends FlatSpec with Matchers with OneInstancePerTest with OptionValues {
 }
 

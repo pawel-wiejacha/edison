@@ -1,12 +1,13 @@
 package edison.search.serialization
 
 import org.json4s.JsonAST.{ JObject, JValue }
-import org.json4s.jackson.JsonMethods._
+import org.json4s.jackson.JsonMethods
+import org.json4s.jackson.JsonMethods.render
 
 import scala.language.implicitConversions
 
 /** Type class responsible for JSON serialization */
-trait JsonSerializer[T] {
+trait JsonSerializer[-T] {
   def serialize(obj: T): JObject
 }
 
@@ -24,13 +25,20 @@ object JsonSerialization {
   }
 
   implicit class ExtendedJson(json: JValue) {
-    def normalized: String = compact(render(json))
+    def normalized: String = JsonMethods.compact(render(json))
+    def pretty: String = JsonMethods.pretty(render(json))
   }
 
   object DefaultSerializers {
+
     implicit object SampleSerializer extends SampleSerializer
+
     implicit object SamplesSerializer extends SamplesSerializer {
       def sampleSerializer = SampleSerializer
+    }
+
+    implicit object TreeSerializer extends TreeSerializer {
+      def samplesSerializer = SamplesSerializer
     }
   }
 

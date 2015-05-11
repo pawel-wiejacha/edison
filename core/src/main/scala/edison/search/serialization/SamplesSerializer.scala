@@ -11,7 +11,7 @@ trait SampleSerializer extends JsonSerializer[Sample] {
 }
 
 trait SamplesSerializer extends JsonSerializer[Samples] {
-  def sampleSerializer: SampleSerializer
+  def sampleSerializer: JsonSerializer[Sample]
 
   override def serialize(samples: Samples): JObject = {
     val values = samples.values.map({ sample => sampleSerializer.serialize(sample) })

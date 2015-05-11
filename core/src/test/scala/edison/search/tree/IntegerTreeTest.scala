@@ -1,8 +1,9 @@
-package edison.search
+package edison.search.tree
 
+import edison.search.IntValueImplicits._
+import edison.search.SampleImplicits._
+import edison.search.{IntValue, Sample, Samples}
 import edison.util.SmartSpec
-import IntValueImplicits.intToIntValue
-import SampleImplicits.pairToSample
 
 class IntegerTreeTest extends SmartSpec {
   behavior of "IntegerTree"
@@ -54,7 +55,7 @@ class IntegerTreeTest extends SmartSpec {
 
   it must "not allow to spilt an unit node" in {
     val unitNode = IntegerTree.empty(Range.inclusive(1, 1))
-    unitNode.split shouldBe empty
+    unitNode.split shouldBe List.empty
   }
 
   it must "spilt node with two values - range" in {

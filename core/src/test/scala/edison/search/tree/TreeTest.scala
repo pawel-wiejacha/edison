@@ -1,5 +1,6 @@
-package edison.search
+package edison.search.tree
 
+import edison.search.Samples
 import edison.util.SmartSpec
 
 class TreeTest extends SmartSpec {

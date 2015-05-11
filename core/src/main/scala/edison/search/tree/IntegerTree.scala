@@ -1,4 +1,6 @@
-package edison.search
+package edison.search.tree
+
+import edison.search._
 
 object IntegerTree {
   def empty(range: Range) = apply(children = List.empty, range, Samples.empty)

@@ -4,6 +4,7 @@ import edison.search.IntValueImplicits.intToIntValue
 import edison.search.SampleImplicits.pairToSample
 import edison.search.serialization.JsonSerialization.DefaultSerializers._
 import edison.search.serialization.{ JsonSerialization, JsonSerializer }
+import edison.search.tree.IntegerTree
 import edison.util.SmartSpec
 
 class JsonSerializationTest extends SmartSpec {

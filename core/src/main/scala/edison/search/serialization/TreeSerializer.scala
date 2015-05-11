@@ -1,6 +1,7 @@
 package edison.search.serialization
 
-import edison.search.{ IntegerTree, Samples, Tree }
+import edison.search.Samples
+import edison.search.tree.{ IntegerTree, Tree }
 import org.json4s.JsonAST.JObject
 import org.json4s.JsonDSL._
 

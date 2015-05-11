@@ -1,4 +1,6 @@
-package edison.search
+package edison.search.tree
+
+import edison.search.{Sample, Samples, Value}
 
 import scala.util.Random
 

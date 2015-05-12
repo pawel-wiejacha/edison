@@ -2,7 +2,7 @@ package edison.search.tree
 
 import edison.search.IntValueImplicits._
 import edison.search.SampleImplicits._
-import edison.search.{IntValue, Sample, Samples}
+import edison.search.{ IntValue, Sample, Samples }
 import edison.util.SmartSpec
 
 class IntegerTreeTest extends SmartSpec {
@@ -55,7 +55,7 @@ class IntegerTreeTest extends SmartSpec {
 
   it must "not allow to spilt an unit node" in {
     val unitNode = IntegerTree.empty(Range.inclusive(1, 1))
-    unitNode.split shouldBe List.empty
+    unitNode.split shouldBe unitNode
   }
 
   it must "spilt node with two values - range" in {
@@ -63,7 +63,7 @@ class IntegerTreeTest extends SmartSpec {
     val left = IntegerTree.empty(Range.inclusive(10, 10))
     val right = IntegerTree.empty(Range.inclusive(11, 11))
 
-    node.split shouldBe List(left, right)
+    node.split shouldBe node.withChildren(List(left, right))
   }
 
   it must "spilt node with three values - range " in {
@@ -71,7 +71,7 @@ class IntegerTreeTest extends SmartSpec {
     val left = IntegerTree.empty(Range.inclusive(10, 10))
     val right = IntegerTree.empty(Range.inclusive(11, 12))
 
-    node.split shouldBe List(left, right)
+    node.split shouldBe node.withChildren(List(left, right))
   }
 
   it must "spilt node with four values - range" in {
@@ -79,7 +79,7 @@ class IntegerTreeTest extends SmartSpec {
     val left = IntegerTree.empty(Range.inclusive(10, 11))
     val right = IntegerTree.empty(Range.inclusive(12, 13))
 
-    node.split shouldBe List(left, right)
+    node.split shouldBe node.withChildren(List(left, right))
   }
 
   it must "spilt node with five values - range" in {
@@ -87,7 +87,7 @@ class IntegerTreeTest extends SmartSpec {
     val left = IntegerTree.empty(Range.inclusive(10, 11))
     val right = IntegerTree.empty(Range.inclusive(12, 14))
 
-    node.split shouldBe List(left, right)
+    node.split shouldBe node.withChildren(List(left, right))
   }
 
   val s11 = Sample(IntValue(1), 1)
@@ -100,7 +100,7 @@ class IntegerTreeTest extends SmartSpec {
     val left = IntegerTree(List.empty, Range.inclusive(1, 1), Samples(s11, s12))
     val right = IntegerTree(List.empty, Range.inclusive(2, 2), Samples(s21))
 
-    node.split shouldBe List(left, right)
+    node.split shouldBe node.withChildren(List(left, right))
   }
 
   it must "spilt node with three values - samples" in {
@@ -108,7 +108,7 @@ class IntegerTreeTest extends SmartSpec {
     val left = IntegerTree(List.empty, Range.inclusive(1, 1), Samples(s11, s12))
     val right = IntegerTree(List.empty, Range.inclusive(2, 3), Samples(s21, s31))
 
-    node.split shouldBe List(left, right)
+    node.split shouldBe node.withChildren(List(left, right))
   }
 
   it must "support adding new samples" in {

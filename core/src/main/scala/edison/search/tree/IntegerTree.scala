@@ -11,18 +11,23 @@ case class IntegerTree(children: List[Tree], range: Range, samples: Samples) ext
   assert(range.size > 0)
 
   override def updated(newSamples: Samples): IntegerTree = copy(samples = newSamples)
+  override def withChildren(children: List[Tree]): Tree = copy(children = children)
 
-  override def split: List[Tree] = {
+  override def split: Tree = {
     assert(children.isEmpty)
 
     if (range.size <= 1) {
-      List.empty
+      this
     } else {
       val leftRange = Range(range.start, range(idxAt(0.5)), range.step)
       val rightRange = Range.inclusive(range(idxAt(0.5)), range.end, range.step)
       val leftSamples = Samples(samples.values.filter({ x => leftRange.contains(x.value.asInt) }))
       val rightSamples = Samples(samples.values.filter({ x => rightRange.contains(x.value.asInt) }))
-      List(IntegerTree(List.empty, leftRange, leftSamples), IntegerTree(List.empty, rightRange, rightSamples))
+      val children = List(
+        IntegerTree(List.empty, leftRange, leftSamples),
+        IntegerTree(List.empty, rightRange, rightSamples))
+
+      withChildren(children)
     }
   }
 

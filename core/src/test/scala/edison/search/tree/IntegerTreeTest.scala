@@ -1,7 +1,5 @@
 package edison.search.tree
 
-import edison.search.IntValueImplicits._
-import edison.search.SampleImplicits._
 import edison.search.{ IntValue, Sample, Samples }
 import edison.util.SmartSpec
 

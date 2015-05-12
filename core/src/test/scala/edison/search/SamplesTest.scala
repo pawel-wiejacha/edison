@@ -1,8 +1,6 @@
 package edison.search
 
 import edison.util.SmartSpec
-import IntValueImplicits.intToIntValue
-import SampleImplicits.pairToSample
 import org.scalactic.TolerantNumerics
 
 class SamplesTest extends SmartSpec {

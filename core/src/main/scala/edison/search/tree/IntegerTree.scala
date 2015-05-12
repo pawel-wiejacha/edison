@@ -25,7 +25,8 @@ case class IntegerTree(children: List[Tree], range: Range, samples: Samples) ext
       val rightSamples = Samples(samples.values.filter({ x => rightRange.contains(x.value.asInt) }))
       val children = List(
         IntegerTree(List.empty, leftRange, leftSamples),
-        IntegerTree(List.empty, rightRange, rightSamples))
+        IntegerTree(List.empty, rightRange, rightSamples)
+      )
 
       withChildren(children)
     }

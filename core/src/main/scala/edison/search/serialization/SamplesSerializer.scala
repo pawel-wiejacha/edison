@@ -1,6 +1,6 @@
 package edison.search.serialization
 
-import edison.search.{Sample, Samples}
+import edison.search.{ Sample, Samples }
 import org.json4s.JsonAST.JObject
 import org.json4s.JsonDSL._
 

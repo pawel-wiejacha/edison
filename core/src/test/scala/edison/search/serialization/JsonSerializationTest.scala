@@ -1,7 +1,7 @@
 package edison.search
 
 import edison.search.serialization.JsonSerialization.DefaultSerializers._
-import edison.search.serialization.{JsonSerialization, JsonSerializer}
+import edison.search.serialization.{ JsonSerialization, JsonSerializer }
 import edison.search.tree.IntegerTree
 import edison.util.SmartSpec
 
@@ -39,7 +39,8 @@ class JsonSerializationTest extends SmartSpec {
         |  "mean": 15.0,
         |  "sd": 5.0
         |}
-        |""")
+        |"""
+    )
   }
 
   it must "be able to serialize an IntegerTree leaf" in {
@@ -53,7 +54,8 @@ class JsonSerializationTest extends SmartSpec {
         |  "samples": ${serialize(samples)},
         |  "children": []
         |}
-      """)
+      """
+    )
   }
 
   it must "be able to serialize an IntegerTree node with children" in {
@@ -68,7 +70,8 @@ class JsonSerializationTest extends SmartSpec {
          |  "samples": ${serialize(root.samples)},
          |  "children": [${serialize(leafA)}, ${serialize(leafB)}]
          |}
-      """)
+      """
+    )
   }
 
   it must "handle inclusive ranges correctly" in {
@@ -79,7 +82,8 @@ class JsonSerializationTest extends SmartSpec {
          |  "samples": { "values": [], "size": 0 },
          |  "children": []
          |}
-      """)
+      """
+    )
   }
 
 }

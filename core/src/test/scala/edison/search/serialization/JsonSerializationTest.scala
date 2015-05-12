@@ -51,7 +51,7 @@ class JsonSerializationTest extends SmartSpec {
     serialize(tree) shouldBe jsonRepr(
       s"""
         |{
-        |  "name": "[1; 50)",
+        |  "name": "[1;50)",
         |  "samples": ${serialize(samples)},
         |  "children": []
         |}
@@ -66,9 +66,20 @@ class JsonSerializationTest extends SmartSpec {
     serialize(root) shouldBe jsonRepr(
       s"""
          |{
-         |  "name": "[1; 3)",
+         |  "name": "[1;3)",
          |  "samples": ${serialize(root.samples)},
          |  "children": [${serialize(leafA)}, ${serialize(leafB)}]
+         |}
+      """)
+  }
+
+  it must "handle inclusive ranges correctly" in {
+    serialize(IntegerTree.empty(Range.inclusive(5, 5))) shouldBe jsonRepr(
+      s"""
+         |{
+         |  "name": "[5;5]",
+         |  "samples": { "values": [], "size": 0 },
+         |  "children": []
          |}
       """)
   }

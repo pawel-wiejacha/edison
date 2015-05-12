@@ -1,6 +1,6 @@
 package edison.search.tree
 
-import edison.search.{Sample, Samples, Value}
+import edison.search.{ Sample, Samples, Value }
 
 import scala.util.Random
 
@@ -17,7 +17,7 @@ trait Tree {
   def withChildren(children: List[Tree]): Tree
 
   def addSample(sample: Sample): Tree = {
-    assert(contains(sample.value))
+    assert(contains(sample.value), s"$this cannot contain $sample")
     updated(samples = samples.add(sample))
   }
 

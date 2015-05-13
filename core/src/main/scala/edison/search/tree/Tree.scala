@@ -4,7 +4,7 @@ import edison.search.{ Sample, Samples, Value }
 
 import scala.util.Random
 
-/** UCTS/MCTS Search Tree (base trait) */
+/** UCT/MCTS Search Tree (base trait) */
 trait Tree {
   def samples: Samples
   def children: List[Tree]

@@ -11,9 +11,9 @@ class SelectorTest extends SmartSpec with TestTree with Assertions {
     override def compare(x: Tree, y: Tree): Int = Ordering[Int].compare(y.samples.size, x.samples.size)
   }
 
-  val selector = Selector(moreSamplesOrdering)
+  val selector = StaticSelector(moreSamplesOrdering)
 
-  behavior of "Selector"
+  behavior of "StaticSelector"
 
   it must "update the scope and return leaf when applied to a leaf" in {
     selector(n5) shouldBe Selection(n5, Scope(n5.range))
@@ -37,6 +37,35 @@ class SelectorTest extends SmartSpec with TestTree with Assertions {
   it must "traverse tree recursively" in {
     val `n1 with n3 updated` = n1.withChildren(List(n2, n3.addSample(400 -> 5.0)))
     selector(`n1 with n3 updated`) shouldBe Selection(n4, Scope(n4.range))
+  }
+
+  behavior of "Selector"
+
+  it can "use custom SelectionContext to create dynamic orderings" in {
+
+    def fixedMinElementOrdering(minElement: Tree) = new Selector.Ordering {
+      override def compare(x: Tree, y: Tree): Int =
+        if (x == minElement) -1
+        else if (y == minElement) 1
+        else 0
+    }
+
+    case class CustomSelectionContext(expectedLeaf: Tree, depth: Int) extends SelectionContext {
+      override def update(selectedNode: Tree): CustomSelectionContext = {
+        assert(depth < 2)
+        copy(depth = depth + 1)
+      }
+
+      override def getOrdering: Selector.Ordering = {
+        depth match {
+          case 0 => fixedMinElementOrdering(n3)
+          case 1 => fixedMinElementOrdering(expectedLeaf)
+        }
+      }
+    }
+
+    Selector(new CustomSelectionContext(n5, 0))(n1) shouldBe Selection(n5, Scope(n5.range))
+    Selector(new CustomSelectionContext(n4, 0))(n1) shouldBe Selection(n4, Scope(n4.range))
   }
 
 }

@@ -60,4 +60,12 @@ class UcbTest extends SmartSpec {
     explored.ucb(1000) shouldBe <(ignored.ucb(1000))
   }
 
+  it must "favor exploration over exploitation when alpha gets bigger" in {
+    val good = createSamples(mean = 10.0, count = 20)
+    val bad = createSamples(mean = 9.0, count = 10)
+
+    good.ucb(alpha = 2, 30) shouldBe >(bad.ucb(alpha = 2, 30))
+    good.ucb(alpha = 8, 30) shouldBe <(bad.ucb(alpha = 8, 30))
+  }
+
 }

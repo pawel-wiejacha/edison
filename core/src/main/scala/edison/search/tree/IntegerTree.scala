@@ -3,11 +3,11 @@ package edison.search.tree
 import edison.search._
 
 object IntegerTree {
-  def empty(range: Range) = apply(children = List.empty, range, Samples.empty)
+  def empty(range: Range) = apply(range, children = List.empty, Samples.empty)
 }
 
 /** Search Tree that handles integer domains */
-case class IntegerTree(children: List[Tree], range: Range, samples: Samples) extends Tree {
+case class IntegerTree(range: Range, children: List[Tree], samples: Samples = Samples.empty) extends Tree {
   assert(range.size > 0)
 
   override def updated(newSamples: Samples): IntegerTree = copy(samples = newSamples)
@@ -24,8 +24,8 @@ case class IntegerTree(children: List[Tree], range: Range, samples: Samples) ext
       val leftSamples = Samples(samples.values.filter({ x => leftRange.contains(x.value.asInt) }))
       val rightSamples = Samples(samples.values.filter({ x => rightRange.contains(x.value.asInt) }))
       val children = List(
-        IntegerTree(List.empty, leftRange, leftSamples),
-        IntegerTree(List.empty, rightRange, rightSamples)
+        IntegerTree(leftRange, List.empty, leftSamples),
+        IntegerTree(rightRange, List.empty, rightSamples)
       )
 
       withChildren(children)

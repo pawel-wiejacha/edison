@@ -10,7 +10,7 @@ trait TreeSerializer extends JsonSerializer[Tree] {
 
   override def serialize(tree: Tree): JObject = {
     tree match {
-      case IntegerTree(children, range, samples) =>
+      case IntegerTree(range, children, samples) =>
         val rangeEndChar = if (range.isInclusive) ']' else ')'
 
         ("name" -> "[%d;%d%c".format(range.start, range.end, rangeEndChar)) ~

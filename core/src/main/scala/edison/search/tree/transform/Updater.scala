@@ -21,8 +21,8 @@ class Updater(predicate: Updater.Predicate, transform: Updater.Transformation) {
       val newNode = if (predicate(tree)) transform(tree) else tree
 
       tree match {
-        case Node(children) => newNode.withChildren(children.map(updateRec))
-        case Leaf() => newNode
+        case Node(_, _*) => newNode.withChildren(tree.children.map(updateRec))
+        case Leaf(_) => newNode
       }
     }
 

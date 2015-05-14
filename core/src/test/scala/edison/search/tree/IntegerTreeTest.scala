@@ -123,4 +123,19 @@ class IntegerTreeTest extends SmartSpec {
     node.samples.max.value shouldBe 3.0
   }
 
+  behavior of "IRange"
+
+  it must "support conversion from inclusive Range" in {
+    IRange(Range.inclusive(1, 5)) shouldBe IRange(1, 5)
+  }
+
+  it must "support conversion from exclusive Range" in {
+    IRange(Range(1, 5)) shouldBe IRange(1, 4)
+    IRange(Range(1, 5, 2)) shouldBe IRange(1, 3)
+  }
+
+  it must "not support conversion from an empty range" in {
+    intercept[AssertionError] { IRange(Range(1, 1)) }
+  }
+
 }

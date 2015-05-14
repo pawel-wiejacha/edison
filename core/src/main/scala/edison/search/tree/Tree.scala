@@ -24,10 +24,27 @@ trait Tree {
   def generateSample: Value = generateSampleAt(Random.nextFloat())
 }
 
+/**
+ * Search domain subspace.
+ *
+ * It's used only for pattern matching.
+ */
+trait Subspace
+
 object Node {
-  def unapply(tree: Tree): Option[List[Tree]] = if (tree.children.isEmpty) None else Some(tree.children)
+  def unapplySeq(tree: Tree): Option[(Subspace, List[Tree])] = {
+    tree match {
+      case IntegerTree(range, children, _) if children.nonEmpty => Some((IRange(range), children))
+      case _ => None
+    }
+  }
 }
 
 object Leaf {
-  def unapply(tree: Tree): Boolean = tree.children.isEmpty
+  def unapply(tree: Tree): Option[Subspace] = {
+    tree match {
+      case IntegerTree(range, Nil, _) => Some(IRange(range))
+      case _ => None
+    }
+  }
 }

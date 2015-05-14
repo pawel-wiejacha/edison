@@ -40,3 +40,21 @@ case class IntegerTree(range: Range, children: List[Tree], samples: Samples = Sa
     Math.min(range.size - 1, Math.floor(pos * range.size).toInt)
   }
 }
+
+/**
+ * Inclusive range.
+ *
+ * It's used only for pattern matching (because Range does not have `unapply` defined)
+ */
+case class IRange(start: Int, end: Int) extends Subspace
+
+object IRange {
+  def apply(range: Range): IRange = {
+    assert(range.nonEmpty)
+
+    if (range.isInclusive)
+      IRange(range.start, range.end)
+    else
+      IRange(range.start, range.last)
+  }
+}

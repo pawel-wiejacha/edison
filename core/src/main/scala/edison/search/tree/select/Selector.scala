@@ -29,12 +29,12 @@ class Selector(initialContext: SelectionContext) {
   def apply[T <: SelectionContext](root: Tree): Selection = {
     @tailrec def selectRec(selection: Selection, context: SelectionContext): Selection = {
       selection.tree match {
-        case Node(children) =>
+        case Node(_, children @ _*) =>
           val ordering = context.getOrdering
           val bestNode = children.sorted(ordering).head
           val newContext = context.update(bestNode)
           selectRec(Selection(bestNode, getScope(bestNode)), newContext)
-        case Leaf() => selection
+        case Leaf(_) => selection
       }
     }
 

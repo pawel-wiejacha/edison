@@ -14,8 +14,8 @@ class Expander(expandPredicate: Expander.Predicate) {
   def apply(root: Tree): Tree = {
     def expandRec(tree: Tree): Tree = {
       tree match {
-        case Node(children) => tree.withChildren(children.map(expandRec))
-        case Leaf() if expandPredicate(tree) =>
+        case Node(_, _*) => tree.withChildren(tree.children.map(expandRec))
+        case Leaf(_) if expandPredicate(tree) =>
           val newNode = tree.split
           if (newNode == tree) tree else expandRec(newNode)
         case _ => tree

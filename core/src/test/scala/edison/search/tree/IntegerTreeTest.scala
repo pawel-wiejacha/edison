@@ -101,7 +101,7 @@ class IntegerTreeTest extends SmartSpec {
   val s21 = Sample(IntValue(2), 1)
   val s31 = Sample(IntValue(3), 1)
 
-  it must "spilt node with two values - samples" in {
+  it must "spilt node with two values - samples (inclusive range)" in {
     val node = IntegerTree(Range.inclusive(1, 2), List.empty, Samples(s11, s21, s12))
     val left = IntegerTree(Range.inclusive(1, 1), List.empty, Samples(s11, s12))
     val right = IntegerTree(Range.inclusive(2, 2), List.empty, Samples(s21))
@@ -109,10 +109,26 @@ class IntegerTreeTest extends SmartSpec {
     node.split shouldBe node.withChildren(List(left, right))
   }
 
-  it must "spilt node with three values - samples" in {
+  it must "spilt node with two values - samples (exclusive range)" in {
+    val node = IntegerTree(Range(1, 3), List.empty, Samples(s11, s21, s12))
+    val left = IntegerTree(Range(1, 2), List.empty, Samples(s11, s12))
+    val right = IntegerTree(Range(2, 3), List.empty, Samples(s21))
+
+    node.split shouldBe node.withChildren(List(left, right))
+  }
+
+  it must "spilt node with three values - samples (inclusive range)" in {
     val node = IntegerTree(Range.inclusive(1, 3), List.empty, Samples(s11, s21, s12, s31))
     val left = IntegerTree(Range.inclusive(1, 1), List.empty, Samples(s11, s12))
     val right = IntegerTree(Range.inclusive(2, 3), List.empty, Samples(s21, s31))
+
+    node.split shouldBe node.withChildren(List(left, right))
+  }
+
+  it must "spilt node with three values - samples (exclusive range)" in {
+    val node = IntegerTree(Range(1, 4), List.empty, Samples(s11, s21, s12, s31))
+    val left = IntegerTree(Range(1, 2), List.empty, Samples(s11, s12))
+    val right = IntegerTree(Range(2, 4), List.empty, Samples(s21, s31))
 
     node.split shouldBe node.withChildren(List(left, right))
   }

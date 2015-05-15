@@ -19,8 +19,12 @@ case class IntegerTree(range: Range, children: List[Tree], samples: Samples = Sa
     if (range.size <= 1) {
       this
     } else {
-      val leftRange = Range(range.start, range(idxAt(0.5)), range.step)
-      val rightRange = Range.inclusive(range(idxAt(0.5)), range.end, range.step)
+      val middle = range(idxAt(0.5))
+      val leftRange = Range(range.start, middle, range.step)
+      val rightRange = {
+        if (range.isInclusive) Range.inclusive(middle, range.end, range.step)
+        else Range(middle, range.end, range.step)
+      }
       val leftSamples = Samples(samples.values.filter({ x => leftRange.contains(x.value.asInt) }))
       val rightSamples = Samples(samples.values.filter({ x => rightRange.contains(x.value.asInt) }))
       val children = List(

@@ -24,6 +24,15 @@ class TreeTest extends SmartSpec with TestTree {
     intercept[MatchError] { val Leaf(_) = n1 }
   }
 
+  it must "unapply to Tree if it's a node" in {
+    val Tree(IRange(200, 599), x, y) = n1
+    (x, y) shouldBe (n2, n3)
+  }
+
+  it must "unapply to Tree if it's a leaf" in {
+    val Tree(IRange(200, 299)) = n2
+  }
+
   it must "allow for pattern matching with wildcards (range)" in {
     val Node(IRange(200, _), x, y) = n1
     (x, y) shouldBe (n2, n3)

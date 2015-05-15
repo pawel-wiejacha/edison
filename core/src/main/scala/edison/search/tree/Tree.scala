@@ -31,6 +31,7 @@ trait Tree {
  */
 trait Subspace
 
+/** A Tree with at least one child */
 object Node {
   def unapplySeq(tree: Tree): Option[(Subspace, List[Tree])] = {
     tree match {
@@ -40,11 +41,22 @@ object Node {
   }
 }
 
+/** A Tree leaf */
 object Leaf {
   def unapply(tree: Tree): Option[Subspace] = {
     tree match {
       case IntegerTree(range, Nil, _) => Some(IRange(range))
       case _ => None
+    }
+  }
+}
+
+/** A Node or a Leaf */
+object Tree {
+  def unapplySeq(tree: Tree): Option[(Subspace, Seq[Tree])] = {
+    tree match {
+      case Node(subspace, children @ _*) => Some(subspace, children)
+      case Leaf(subspace) => Some(subspace, List.empty)
     }
   }
 }

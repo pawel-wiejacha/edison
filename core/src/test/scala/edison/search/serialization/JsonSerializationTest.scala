@@ -2,6 +2,7 @@ package edison.search
 
 import edison.search.serialization.JsonSerialization.DefaultSerializers._
 import edison.search.serialization.{ JsonSerialization, JsonSerializer }
+import edison.search.tree.Helpers.TreePrettyPrinter
 import edison.search.tree.IntegerTree
 import edison.util.SmartSpec
 
@@ -86,4 +87,40 @@ class JsonSerializationTest extends SmartSpec {
     )
   }
 
+  behavior of "TreePrettyPrinter"
+
+  it must "pretty print trees" in {
+    val root = IntegerTree(Range(1, 2), List.empty, Samples(1 -> 10.0))
+    root.json shouldBe """
+      |{
+      |  "name" : "[1;2)",
+      |  "samples" : {
+      |    "values" : [ {
+      |      "value" : 1,
+      |      "result" : 10.0
+      |    } ],
+      |    "size" : 1,
+      |    "min" : 10.0,
+      |    "max" : 10.0,
+      |    "mean" : 10.0,
+      |    "sd" : 0.0
+      |  },
+      |  "children" : [ ]
+      |}
+    """.stripMargin.trim
+  }
+
+  it must "pretty print trees in compact mode" in {
+    val root = IntegerTree(Range(1, 2), List.empty, Samples(1 -> 10.0))
+    root.shortJson shouldBe """
+      |{
+      |  "name" : "[1;2)",
+      |  "samples" : {
+      |    "size" : 1,
+      |    "mean" : 10.0
+      |  },
+      |  "children" : [ ]
+      |}
+    """.stripMargin.trim
+  }
 }

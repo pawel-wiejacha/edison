@@ -68,4 +68,26 @@ class SelectorTest extends SmartSpec with TestTree with Assertions {
     Selector(new CustomSelectionContext(n4, 0))(n1) shouldBe Selection(n4, Scope(n4.range))
   }
 
+  behavior of "ClosestRangeSelector"
+
+  it must "traverse the tree in order to find closest match" in {
+    ClosestRangeSelector(200)(n1).tree shouldBe n2
+    ClosestRangeSelector(250)(n1).tree shouldBe n2
+    ClosestRangeSelector(299)(n1).tree shouldBe n2
+
+    ClosestRangeSelector(300)(n1).tree shouldBe n4
+    ClosestRangeSelector(400)(n1).tree shouldBe n4
+    ClosestRangeSelector(499)(n1).tree shouldBe n4
+
+    ClosestRangeSelector(500)(n1).tree shouldBe n5
+    ClosestRangeSelector(550)(n1).tree shouldBe n5
+    ClosestRangeSelector(599)(n1).tree shouldBe n5
+  }
+
+  it must "throw IllegalArgumentException when appropriate node could not be found" in {
+    intercept[IllegalArgumentException] { ClosestRangeSelector(199)(n1).tree }
+    intercept[IllegalArgumentException] { ClosestRangeSelector(600)(n1).tree }
+    intercept[IllegalArgumentException] { ClosestRangeSelector(900)(n1).tree }
+  }
+
 }

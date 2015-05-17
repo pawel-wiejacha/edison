@@ -71,6 +71,13 @@ class SamplesTest extends SmartSpec {
     updated2.max shouldBe twoSamples10_20.max
   }
 
+  it must "support concatenation" in {
+    (twoSamples10_20 ::: twoSamples10_10) shouldBe Samples(
+      1 -> 10.0, 2 -> 10.0,
+      1 -> 10.0, 2 -> 20.0
+    )
+  }
+
   it can "contain non-unique entries" in {
     val twoSamples = emptySamples.add(1 -> 10.0).add(1 -> 10.0)
     twoSamples.size shouldBe 2

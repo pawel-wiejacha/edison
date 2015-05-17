@@ -13,6 +13,10 @@ case class Samples(values: List[Sample]) {
     copy(values = sample :: values)
   }
 
+  def :::(other: Samples): Samples = {
+    Samples(values ::: other.values)
+  }
+
   /** Number of samples */
   def size: Int = values.size
   def mean: Option[Result] = results.reduceOption(_ + _).map(_ / size)

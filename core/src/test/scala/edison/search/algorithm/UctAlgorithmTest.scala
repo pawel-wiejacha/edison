@@ -2,6 +2,7 @@ package edison.search.algorithm
 
 import edison.search.tree._
 import edison.search.tree.select.ClosestRangeSelector
+import edison.search.tree.verifier.BasicVerifier
 import edison.search.{ Result, Sample }
 import edison.util.SmartSpec
 import org.scalatest.{ Inside, Inspectors }
@@ -143,6 +144,10 @@ class UctAlgorithmTest extends SmartSpec with Inspectors with Inside {
       nodeWith70.samples.mean shouldBe >(secondaryNode.samples.mean)
       nodeWith70.samples.ucb(2.0, 100) shouldBe >(secondaryNode.samples.ucb(2.0, 100))
     }
+  }
+
+  it must "create a tree that passes tree verification" in new ParabolaTest {
+    new BasicVerifier(expandedTree).verify
   }
 }
 

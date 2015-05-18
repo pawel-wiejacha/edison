@@ -2,7 +2,7 @@ package edison.search.algorithm
 
 import edison.search.tree._
 import edison.search.tree.select.ClosestRangeSelector
-import edison.search.{ Samples, Result, Sample }
+import edison.search.{ Result, Sample }
 import edison.util.SmartSpec
 import org.scalatest.{ Inside, Inspectors }
 

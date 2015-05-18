@@ -43,6 +43,10 @@ case class IntegerTree(range: Range, children: List[Tree], samples: Samples = Sa
   private def idxAt(pos: Double): Int = {
     Math.min(range.size - 1, Math.floor(pos * range.size).toInt)
   }
+
+  override def toString(): String = {
+    "IntegerTree(%s, [%s])".format(IRange(this.range), children.mkString(", "))
+  }
 }
 
 /**

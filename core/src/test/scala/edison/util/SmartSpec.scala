@@ -10,5 +10,12 @@ abstract class SmartSpec
     with OptionValues
     with IntValueImplicits with SampleImplicits
     with TestHelpers {
+
+  implicit class StringTrimmer(str: String) {
+    def strip: String = {
+      str.stripMargin.trim
+    }
+  }
+
 }
 

@@ -43,6 +43,7 @@ object ShellPrompt {
 object Dependencies {
   val json4s = "org.json4s" %% "json4s-jackson" % "3.2.11"
   val scopt = "com.github.scopt" %% "scopt" % "3.3.0"
+  val snakeyaml = "org.yaml" % "snakeyaml" % "1.15"
 
   val scalatest = "org.scalatest" %% "scalatest" % "2.2.4" % "test"
   val scalacheck = "org.scalacheck" %% "scalacheck" % "1.12.2" % "test"
@@ -78,7 +79,7 @@ object ScalaMockBuild extends Build {
     file("service"),
     settings = buildSettings ++ Seq(
       name := "Edison Service",
-      libraryDependencies ++= Seq(scopt) ++ testDeps
+      libraryDependencies ++= Seq(scopt, snakeyaml) ++ testDeps
     )
   ) dependsOn (core % "compile->compile;test->test")
 }

@@ -1,21 +1,22 @@
 package edison.util
 
 import edison.search.{ IntValueImplicits, SampleImplicits }
-import org.scalatest.{ FlatSpec, Matchers, OneInstancePerTest, OptionValues }
+import org.scalatest._
 
-abstract class SmartSpec
-    extends FlatSpec
-    with Matchers
+trait AbstractSmartSpec
+    extends Matchers
     with OneInstancePerTest
     with OptionValues
     with IntValueImplicits with SampleImplicits
-    with TestHelpers {
+    with TestHelpers { this: Suite =>
 
   implicit class StringTrimmer(str: String) {
     def strip: String = {
       str.stripMargin.trim
     }
   }
-
 }
+
+abstract class SmartSpec extends FlatSpec with AbstractSmartSpec
+abstract class SmartFreeSpec extends FreeSpec with AbstractSmartSpec
 

@@ -6,6 +6,7 @@ import edison.search.tree.verifier.BasicVerifier
 import edison.search.{ Result, Sample }
 import edison.util.SmartSpec
 import org.scalatest.{ Inside, Inspectors }
+import edison.search.tree.Helpers.TreePrettyPrinter
 
 class UctAlgorithmTest extends SmartSpec with Inspectors with Inside {
 
@@ -103,7 +104,7 @@ class UctAlgorithmTest extends SmartSpec with Inspectors with Inside {
   }
 
   /** This test context uses UCT algorithm to sample a quadratic function with global maximum 0 at x0 == 70 */
-  class ParabolaTest extends AlgTest(alpha = 3, expandThreshold = 10) {
+  class ParabolaTest extends AlgTest(alpha = 2, expandThreshold = 10) {
     def parabola(x0: Int): Int => Result = x => -1 * Math.pow((x - x0), 2)
 
     val expandedTree = performSteps(100)(algorithm, root, parabola(x0 = 70))
@@ -140,9 +141,11 @@ class UctAlgorithmTest extends SmartSpec with Inspectors with Inside {
   }
 
   it must "compute mean and UCB of all secondary nodes correctly" in new ParabolaTest {
-    forAll(secondaryNodes) { secondaryNode =>
-      nodeWith70.samples.mean shouldBe >(secondaryNode.samples.mean)
-      nodeWith70.samples.ucb(2.0, 100) shouldBe >(secondaryNode.samples.ucb(2.0, 100))
+    withClue(expandedTree.shortJson) {
+      forAll(secondaryNodes) { secondaryNode =>
+        nodeWith70.samples.mean shouldBe >(secondaryNode.samples.mean)
+        nodeWith70.samples.ucb(1.0, 100) shouldBe >(secondaryNode.samples.ucb(1.0, 100))
+      }
     }
   }
 

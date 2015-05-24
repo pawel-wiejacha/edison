@@ -3,7 +3,7 @@ package edison.model.domain
 import edison.model._
 
 object ParamDefs {
-  def apply(params: List[ParamDef]): ParamDefs = {
+  def apply(params: Seq[ParamDef]): ParamDefs = {
     new ParamDefs(params.toVector, Map[ParamName, ParamDef](params.map({ p => (p.name, p) }): _*))
   }
 }

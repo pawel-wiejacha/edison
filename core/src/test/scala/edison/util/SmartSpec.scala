@@ -7,6 +7,7 @@ trait AbstractSmartSpec
     extends Matchers
     with OneInstancePerTest
     with OptionValues
+    with TryValues
     with IntValueImplicits with SampleImplicits
     with TestHelpers { this: Suite =>
 

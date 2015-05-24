@@ -1,5 +1,6 @@
 package edison.model.domain
 
+import edison.util.IntBytes.IntBytes
 import edison.util.SmartFreeSpec
 
 import scala.language.postfixOps

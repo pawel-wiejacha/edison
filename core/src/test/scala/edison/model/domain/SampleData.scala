@@ -1,15 +1,10 @@
 package edison.model.domain
 
-import edison.model.domain._
+import edison.util.IntBytes.IntBytes
 
 import scala.language.postfixOps
 
 trait SampleData {
-
-  implicit class MemSizes(size: Int) {
-    val KB = size * 1024 // KiB actually
-    val MB = size * 1024 * 1024
-  }
 
   object CacheEvictionPolicy extends Enumeration {
     val LRU, FIFO = Value

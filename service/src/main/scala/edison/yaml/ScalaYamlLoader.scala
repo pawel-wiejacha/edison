@@ -14,6 +14,8 @@ import scala.collection.JavaConversions.asScalaIterator
 class ScalaYamlLoader(constructor: ScalaObjConstructor) extends YamlLoader {
   private val yamlLoader = new org.yaml.snakeyaml.Yaml(constructor)
 
+  def this() = this(new ScalaObjConstructor)
+
   def load(data: String): Any = {
     yamlLoader.load(data)
   }

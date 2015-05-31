@@ -24,7 +24,7 @@ object ProjectParser {
 object SearchDomainParser {
   def parse(project: Mapping): ParseResult[domain.SearchDomain] = Try {
     val paramDefs = SearchDomain.parse(project).get.map(ParamDefParser.parse) map { _.get }
-    domain.SearchDomain(domain.ParamDefs(paramDefs))
+    domain.SearchDomain(domain.ParamDefs(paramDefs: _*))
   }
 }
 

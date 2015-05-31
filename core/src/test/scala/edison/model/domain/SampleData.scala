@@ -13,10 +13,10 @@ trait SampleData {
   val paramDomain0_policy = ParamDomainEnum(CacheEvictionPolicy)
   val paramDomain1_cacheSize = ParamDomainInteger(Range.inclusive(4 MB, 200 MB, 1024))
 
-  val paramDefs = ParamDefs(List(
+  val paramDefs = ParamDefs(
     ParamDef("EvictionPolicy", paramDomain0_policy),
     ParamDef("CacheSize", paramDomain1_cacheSize)
-  ))
+  )
 
   val searchDomain = SearchDomain(paramDefs)
 

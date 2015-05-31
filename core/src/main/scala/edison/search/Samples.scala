@@ -23,6 +23,7 @@ case class Samples(values: List[Sample]) {
   def sd: Option[Result] = variance.map(Math.sqrt)
   def max: Option[Result] = results.reduceOption(_ max _)
   def min: Option[Result] = results.reduceOption(_ min _)
+  def isEmpty: Boolean = values.isEmpty
 
   /**
    * Computes the Upper Confidence Bound.

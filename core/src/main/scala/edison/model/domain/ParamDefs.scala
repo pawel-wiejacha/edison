@@ -3,7 +3,7 @@ package edison.model.domain
 import edison.model._
 
 object ParamDefs {
-  def apply(params: Seq[ParamDef]): ParamDefs = {
+  def apply(params: ParamDef*): ParamDefs = {
     new ParamDefs(params.toVector, Map[ParamName, ParamDef](params.map({ p => (p.name, p) }): _*))
   }
 }
@@ -14,4 +14,5 @@ object ParamDefs {
 case class ParamDefs private (list: Vector[ParamDef], map: Map[ParamName, ParamDef]) {
   def apply(idx: Int): ParamDef = list(idx)
   def apply(paramName: ParamName): ParamDef = map(paramName)
+  def size: Int = list.size
 }

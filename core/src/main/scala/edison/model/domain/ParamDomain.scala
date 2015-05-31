@@ -5,7 +5,7 @@ package edison.model.domain
  *
  * @see ParamDef
  */
-trait ParamDomain {
+sealed trait ParamDomain {
   type Value
 
   def isDiscrete: Boolean

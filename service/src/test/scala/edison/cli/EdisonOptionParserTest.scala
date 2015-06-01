@@ -6,18 +6,10 @@ import edison.util.SmartSpec
 class EdisonOptionParserTest extends SmartSpec {
   behavior of "EdisonOptionParser when parsing command line options"
 
-  class TestableParser extends EdisonOptionParser {
-    var errors: String = ""
-
-    override def reportError(msg: String): Unit = errors += msg + "\n"
-    override def reportWarning(msg: String): Unit = fail("warnings are not expected in this test")
-    override def showTryHelp: Unit = ()
-  }
-
   case class ParseResult(config: Option[Config], errors: String)
 
   def parse(args: String*): ParseResult = {
-    val parser = new TestableParser
+    val parser = new OptionParserForTests
     val config = parser.parse(args, Config())
     ParseResult(config, parser.errors)
   }

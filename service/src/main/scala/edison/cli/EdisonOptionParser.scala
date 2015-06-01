@@ -2,6 +2,8 @@ package edison.cli
 
 import edison.search.IntValue
 
+import scala.util.{ Failure, Success, Try }
+
 class EdisonOptionParser extends scopt.OptionParser[Config]("edison") {
 
   val edisonVersion: String = "0.0.1"
@@ -41,4 +43,11 @@ class EdisonOptionParser extends scopt.OptionParser[Config]("edison") {
   checkConfig({ config =>
     if (config.action != null) success else failure("No action provided")
   })
+
+  def parse(args: Array[String]): Try[Config] = {
+    parse(args, Config()) match {
+      case Some(config) => Success(config)
+      case None => Failure(new RuntimeException("Failed to parse command line options"))
+    }
+  }
 }

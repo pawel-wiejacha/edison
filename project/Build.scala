@@ -5,7 +5,7 @@ import com.typesafe.sbt.SbtScalariform.scalariformSettings
 
 object BuildSettings {
   val edisonVersion = "0.0.1"
-  val buildScalaVersion = "2.11.5"
+  val buildScalaVersion = "2.11.6"
 
   val buildSettings =
     Defaults.coreDefaultSettings ++ Seq(
@@ -25,7 +25,7 @@ object ShellPrompt {
   }
 
   def currBranch = (
-    (("git status -sb" lines_! Devnull).headOption)
+    ("git status -sb" lines_! Devnull).headOption
     getOrElse "-" stripPrefix "## "
   )
 
@@ -45,6 +45,11 @@ object Dependencies {
   val scopt = "com.github.scopt" %% "scopt" % "3.3.0"
   val snakeyaml = "org.yaml" % "snakeyaml" % "1.15"
 
+  val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0"
+  val logback = "ch.qos.logback" % "logback-classic" % "1.0.9"
+
+  val scaldi = "org.scaldi" %% "scaldi" % "0.5.6"
+
   val scalatest = "org.scalatest" %% "scalatest" % "2.2.4" % "test"
   val scalacheck = "org.scalacheck" %% "scalacheck" % "1.12.2" % "test"
   val scalamock = "org.scalamock" %% "scalamock-scalatest-support" % "3.2.2" % "test"
@@ -61,7 +66,7 @@ object ScalaMockBuild extends Build {
     file("."),
     settings = buildSettings ++ Seq(
       compile in Compile := Analysis.Empty,
-      sources in Compile <<= (Seq(core, service).map(sources in Compile in _).join).map(_.flatten)
+      sources in Compile <<= Seq(core, service).map(sources in Compile in _).join.map(_.flatten)
     )
   ) aggregate (core, service)
 
@@ -79,7 +84,7 @@ object ScalaMockBuild extends Build {
     file("service"),
     settings = buildSettings ++ Seq(
       name := "Edison Service",
-      libraryDependencies ++= Seq(scopt, snakeyaml) ++ testDeps
+      libraryDependencies ++= Seq(scopt, snakeyaml, logback, scalaLogging, scaldi) ++ testDeps
     )
   ) dependsOn (core % "compile->compile;test->test")
 }

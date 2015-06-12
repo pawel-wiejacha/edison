@@ -1,5 +1,6 @@
 import sbt._
 import Keys._
+import sbtassembly.AssemblyKeys._
 import sbt.inc.Analysis
 import com.typesafe.sbt.SbtScalariform.scalariformSettings
 
@@ -84,7 +85,8 @@ object ScalaMockBuild extends Build {
     file("service"),
     settings = buildSettings ++ Seq(
       name := "Edison Service",
-      libraryDependencies ++= Seq(scopt, snakeyaml, logback, scalaLogging, scaldi) ++ testDeps
+      libraryDependencies ++= Seq(scopt, snakeyaml, logback, scalaLogging, scaldi) ++ testDeps,
+      assemblyJarName in assembly := s"edison-service-onejar-${version.value}.jar"
     )
   ) dependsOn (core % "compile->compile;test->test")
 }

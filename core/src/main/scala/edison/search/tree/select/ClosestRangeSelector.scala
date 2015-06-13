@@ -1,7 +1,7 @@
 package edison.search.tree.select
 
 import edison.search.Value
-import edison.search.tree.Tree
+import edison.search.tree.{ IntegerTree, Tree }
 
 object ClosestRangeSelector {
   def apply(targetValue: Value): Selector = new ClosestRangeSelector(targetValue)
@@ -12,7 +12,7 @@ private case class ClosestRangeOrdering(targetValue: Value) extends Selector.Ord
     if (x.contains(targetValue)) -1
     else if (y.contains(targetValue)) 1
     else {
-      assert(false, "Siblings should have disjoint ranges")
+      assert(false, s"Either $x or $y should contain $targetValue")
       0
     }
   }

@@ -3,7 +3,7 @@ package edison.model.domain
 import scala.language.existentials
 
 /** An actual value (e.g. 42) of a Param */
-trait ParamValue {
+sealed trait ParamValue {
   type DomainType <: ParamDomain
 
   def domain: DomainType

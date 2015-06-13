@@ -1,0 +1,14 @@
+<configuration>
+
+    <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.err</target>
+        <encoder>
+            <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss.SSSXXX} [%thread]) %highlight(%-5level) %cyan(%msg) %green(&lt;%logger{36}&gt;) %yellow([%file:%line]) %n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="debug">
+        <appender-ref ref="STDERR"/>
+    </root>
+
+</configuration>

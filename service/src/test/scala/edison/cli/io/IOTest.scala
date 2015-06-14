@@ -1,14 +1,14 @@
 package edison.cli.io
 
-import java.io.File
-import java.nio.file.{ Paths, Files }
+import java.io.{ File, OutputStream, PrintStream }
+import java.nio.file.{ Files, Paths }
 
 import edison.util.SmartSpec
+import org.scalamock.scalatest.MockFactory
 
 import scala.util.Success
 
-class IOTest extends SmartSpec {
-  behavior of "I/O Layer"
+class IOTest extends SmartSpec with MockFactory {
 
   def withTmpFile(body: String => Unit) {
     val tmpFile = File.createTempFile("edison", ".tmp")
@@ -17,6 +17,21 @@ class IOTest extends SmartSpec {
     finally
       tmpFile.delete()
   }
+
+  def withMockedStdout(body: PrintStream => Unit) {
+    class MockablePrintStream extends PrintStream(mock[OutputStream], false)
+    val stdoutMock = mock[MockablePrintStream]
+
+    val originalStdout = System.out
+    System.setOut(stdoutMock)
+
+    try
+      body(stdoutMock)
+    finally
+      System.setOut(originalStdout)
+  }
+
+  behavior of "I/O Layer"
 
   it must "be able to read what it wrote" in withTmpFile { filePath =>
     DefaultIO.appendToFile(filePath, "some text") shouldBe Success(())
@@ -33,6 +48,14 @@ class IOTest extends SmartSpec {
     DefaultIO.appendToFile(filePath, "some text\n") shouldBe Success(())
     DefaultIO.appendToFile(filePath, "some other text") shouldBe Success(())
     DefaultIO.readFile(filePath).get shouldBe "some text\nsome other text"
+  }
+
+  it can "write to console" in withMockedStdout { stdoutMock =>
+    (stdoutMock.write: (Array[Byte], Int, Int) => Unit).expects(
+      argThat { arg: Array[Byte] => arg.take(4).toList == "foo\n".getBytes("UTF-8").toList },
+      0, 4
+    )
+    DefaultIO.writeToStdout("foo")
   }
 
 }

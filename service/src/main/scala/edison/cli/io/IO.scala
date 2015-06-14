@@ -10,4 +10,5 @@ import scala.util.Try
 trait IO {
   def readFile(filePath: String): Try[String]
   def appendToFile(filePath: String, content: String): Try[Unit]
+  def writeToStdout(content: String): Try[Unit]
 }

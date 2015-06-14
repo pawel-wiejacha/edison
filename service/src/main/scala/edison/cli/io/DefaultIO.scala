@@ -13,9 +13,18 @@ object DefaultIO extends IO {
 
   override def appendToFile(filePath: String, content: String): Try[Unit] = Try {
     val out = new OutputStreamWriter(new FileOutputStream(filePath, true), StandardCharsets.UTF_8)
+
     try
       out.write(content)
     finally
       out.close()
+  }
+
+  override def writeToStdout(content: String): Try[Unit] = Try {
+    val out = new OutputStreamWriter(System.out, StandardCharsets.UTF_8)
+
+    out.write(content)
+    out.write("\n")
+    out.flush()
   }
 }

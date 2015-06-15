@@ -1,10 +1,10 @@
 package edison.cli
 
+import com.typesafe.scalalogging.StrictLogging
 import edison.cli.actions.{ ResultRecorder, SampleGenerator }
 import edison.cli.io.IO
 import edison.model.domain.Project
 import edison.yaml.project.ProjectDefinitionParser
-import org.slf4j.LoggerFactory
 import scaldi.{ Injectable, Injector }
 
 import scala.util.{ Failure, Success, Try }
@@ -18,12 +18,11 @@ object CliMain {
 }
 
 /** Edison command line interface */
-class EdisonCli(implicit val injector: Injector) extends Injectable {
+class EdisonCli(implicit val injector: Injector) extends Injectable with StrictLogging {
   val io = inject[IO]
   val sampleGenerator = inject[SampleGenerator]
   val resultRecorder = inject[ResultRecorder]
   val optionParser = inject[EdisonOptionParser]
-  val logger = LoggerFactory.getLogger("service.cli.EdisonCli")
 
   def main(args: Array[String]): Unit = {
     createEnvironment(args) match {

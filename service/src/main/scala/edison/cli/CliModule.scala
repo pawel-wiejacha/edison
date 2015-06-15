@@ -7,7 +7,7 @@ import scaldi.Module
 /** Default DI bindings for Edison CLI */
 class CliModule extends Module {
   bind[IO] to DefaultIO
-  bind[SampleGenerator] to SampleGenerator
+  bind[SampleGenerator] to injected[SampleGenerator]
   bind[ResultRecorder] to ResultRecorder
   bind[EdisonOptionParser] to new EdisonOptionParser
 }

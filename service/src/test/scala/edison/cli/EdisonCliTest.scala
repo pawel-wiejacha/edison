@@ -6,18 +6,20 @@ import edison.cli.actions.{ ResultRecorder, SampleGenerator }
 import edison.cli.io.IO
 import edison.model.domain._
 import edison.search.IntValue
+import edison.util.IntBytes.IntBytes
 import edison.util.SmartFreeSpec
 import edison.yaml.project.ParseError
 import org.scalamock.scalatest.MockFactory
-import edison.util.IntBytes.IntBytes
 import scaldi.Module
-import scala.language.postfixOps
 
+import scala.language.postfixOps
 import scala.util.{ Failure, Success }
+
+class MockableSampleGenerator extends SampleGenerator(null)
 
 class EdisonCliTest extends SmartFreeSpec with MockFactory {
   val ioMock = mock[IO]
-  val sampleGeneratorMock = mock[SampleGenerator]
+  val sampleGeneratorMock = mock[MockableSampleGenerator]
   val resultRecorderMock = mock[ResultRecorder]
 
   def cli = {

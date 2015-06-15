@@ -1,17 +1,15 @@
 package edison.cli.actions
 
+import com.typesafe.scalalogging.StrictLogging
 import edison.cli.{ Environment, StoreResultAction }
-import org.slf4j.LoggerFactory
 
 /** Stores evaluated samples in the journal */
 trait ResultRecorder {
   def storeResult(action: StoreResultAction, env: Environment): Unit
 }
 
-object ResultRecorder extends ResultRecorder {
-  val logger = LoggerFactory.getLogger("service.cli.ResultRecorder")
-
+object ResultRecorder extends ResultRecorder with StrictLogging {
   def storeResult(action: StoreResultAction, env: Environment): Unit = {
-    logger.info("Storing result: {} => {}", action.sample, action.result)
+    logger.info(s"Storing result: ${action.sample}, ${action.result}")
   }
 }

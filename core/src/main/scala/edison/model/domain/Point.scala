@@ -8,6 +8,4 @@ import edison.model._
  * @param domain the search domain this point belongs to
  * @param params coordinates that describe the location of this point in the space defined by the search domain
  */
-case class Point(domain: SearchDomain, params: Params) {
-  def name: String = "%08x".format(hashCode())
-}
+case class Point(domain: SearchDomain, params: Params)

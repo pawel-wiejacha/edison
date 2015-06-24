@@ -19,5 +19,5 @@ import edison.model._
  */
 case class ParamDef(name: ParamName, domain: ParamDomain) {
   def create(value: domain.Value): Param = Param(name, domain.create(value))
-  def createUnsafe[T](value: T): Param = create(value.asInstanceOf[domain.Value])
+  def createUnsafe[T](value: T): Param = Param(name, domain.createUnsafe(value.asInstanceOf[domain.Value]))
 }

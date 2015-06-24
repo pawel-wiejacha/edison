@@ -26,6 +26,10 @@ case class ParamDomainEnum[T <: Enumeration](enumeration: T) extends ParamDomain
   override def isNumeric: Boolean = false
 
   def create(value: Value): EnumParam[T, this.type] = EnumParam(value, this)
+  override def createUnsafe[T](value: T): ParamValue = value match {
+    case name: String => super.createUnsafe(enumeration.withName(name))
+    case _: Value => super.createUnsafe(value)
+  }
 }
 
 /**

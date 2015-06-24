@@ -12,6 +12,7 @@ class SearchDomainModelTest extends SmartFreeSpec with SampleData {
       IntegerParam(4 MB, paramDomain1_cacheSize).value shouldBe (4 MB)
       IntegerParam(4.MB + 1024, paramDomain1_cacheSize).value shouldBe (4.MB + 1024)
     }
+
     "must check the domain it belongs to" in {
       intercept[AssertionError] { IntegerParam(4.MB - 1, paramDomain1_cacheSize) }
       intercept[AssertionError] { IntegerParam(4.MB + 1025, paramDomain1_cacheSize) }
@@ -23,6 +24,7 @@ class SearchDomainModelTest extends SmartFreeSpec with SampleData {
       paramDomain1_cacheSize.create(4 MB).domain shouldBe paramDomain1_cacheSize
       paramDomain1_cacheSize.create(4 MB).value shouldBe (4 MB)
     }
+
     "should override ParamDomain methods" in {
       paramDomain1_cacheSize.isDiscrete shouldBe true
       paramDomain1_cacheSize.isNumeric shouldBe true
@@ -36,11 +38,23 @@ class SearchDomainModelTest extends SmartFreeSpec with SampleData {
       param.value shouldBe CacheEvictionPolicy.FIFO
       param.domain shouldBe paramDomain0_policy
     }
-    "can createUnsafe EnumParams" in {
+
+    "can createUnsafe EnumParams (from enumeration)" in {
       val param = paramDomain0_policy.createUnsafe(CacheEvictionPolicy.FIFO)
       param.value shouldBe CacheEvictionPolicy.FIFO
       param.domain shouldBe paramDomain0_policy
     }
+
+    "can createUnsafe EnumParams (from String)" in {
+      val param = paramDomain0_policy.createUnsafe("FIFO")
+      param.value shouldBe CacheEvictionPolicy.FIFO
+      param.domain shouldBe paramDomain0_policy
+    }
+
+    "does some checking during createUnsafe" in {
+      intercept[NoSuchElementException] { paramDomain0_policy.createUnsafe("invalid") }
+    }
+
     "should override ParamDomain methods" in {
       paramDomain0_policy.isDiscrete shouldBe true
       paramDomain0_policy.isNumeric shouldBe false

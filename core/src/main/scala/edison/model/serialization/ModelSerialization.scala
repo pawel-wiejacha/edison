@@ -11,11 +11,10 @@ trait ParamSerializer extends JsonSerializer[Param] {
   def serializeAsField(param: Param): JField =
     param.name -> serializeValue(param.value)
 
-  private def serializeValue(value: ParamValue): JValue =
-    value match {
-      case IntegerParam(value, _) => value
-      case EnumParam(value, _) => value.toString
-    }
+  private def serializeValue: ParamValue => JValue = {
+    case IntegerParam(value, _) => value
+    case EnumParam(value, _) => value.toString
+  }
 }
 
 trait PointSerializer extends JsonSerializer[Point] {

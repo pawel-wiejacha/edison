@@ -16,8 +16,7 @@ class ModelSerializationTest extends SmartSpec with SampleData {
     serialize(param1_5mb) shouldBe
       """
         |{
-        |  "name" : "CacheSize",
-        |  "value" : 5242880
+        |  "CacheSize" : 5242880
         |}
       """.strip
   }
@@ -26,8 +25,7 @@ class ModelSerializationTest extends SmartSpec with SampleData {
     serialize(param0_fifo) shouldBe
       """
         |{
-        |  "name" : "EvictionPolicy",
-        |  "value" : "FIFO"
+        |  "EvictionPolicy" : "FIFO"
         |}
       """.strip
   }
@@ -38,13 +36,8 @@ class ModelSerializationTest extends SmartSpec with SampleData {
     serialize(point1) shouldBe
       """
         |{
-        |  "params" : [ {
-        |    "name" : "EvictionPolicy",
-        |    "value" : "FIFO"
-        |  }, {
-        |    "name" : "CacheSize",
-        |    "value" : 5242880
-        |  } ]
+        |  "EvictionPolicy" : "FIFO",
+        |  "CacheSize" : 5242880
         |}
       """.strip
   }

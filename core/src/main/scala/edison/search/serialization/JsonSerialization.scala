@@ -1,6 +1,6 @@
 package edison.search.serialization
 
-import org.json4s.JsonAST.{ JObject, JValue }
+import org.json4s.JsonAST.JValue
 import org.json4s.jackson.JsonMethods
 import org.json4s.jackson.JsonMethods.render
 
@@ -8,7 +8,7 @@ import scala.language.implicitConversions
 
 /** Type class responsible for JSON serialization */
 trait JsonSerializer[-T] {
-  def serialize(obj: T): JObject
+  def serialize(obj: T): JValue
 }
 
 /**
@@ -16,7 +16,7 @@ trait JsonSerializer[-T] {
  */
 object JsonSerialization {
 
-  def serialize[T](obj: T)(implicit serializer: JsonSerializer[T]): JObject = {
+  def serialize[T](obj: T)(implicit serializer: JsonSerializer[T]): JValue = {
     serializer.serialize(obj)
   }
 

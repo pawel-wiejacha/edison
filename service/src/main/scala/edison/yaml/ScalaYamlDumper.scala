@@ -1,5 +1,6 @@
 package edison.yaml
 
+import edison.util.Union
 import org.yaml.snakeyaml.nodes.{ Node, Tag }
 import org.yaml.snakeyaml.representer.{ Represent, Representer }
 import org.yaml.snakeyaml.{ DumperOptions, Yaml }
@@ -12,7 +13,7 @@ import scala.reflect.ClassTag
  *   - primitive types
  *   - Scala lists, maps and sets
  *     - can be nested
- *   - custom types (manual conversion to Map[String, Any] has to be provided)
+ *   - custom types (manual conversion to Map[String, Any] or to List[Any] has to be provided)
  */
 class ScalaYamlDumper(representer: ScalaObjRepresenter, dumperOptions: DumperOptions) extends YamlDumper {
   private val yamlDumper = new Yaml(representer, dumperOptions)
@@ -24,13 +25,17 @@ class ScalaYamlDumper(representer: ScalaObjRepresenter, dumperOptions: DumperOpt
 
 class ScalaObjRepresenter extends Representer {
 
+  type Representation = Union[Map[String, Any], List[Any]]
+
   multiRepresenters.put(classOf[List[_]], new RepresentList())
   multiRepresenters.put(classOf[Map[_, _]], new RepresentMap())
   multiRepresenters.put(classOf[Set[_]], new RepresentSet())
 
-  def addCustomRepresenter[T](converter: T => Map[String, Any])(implicit ev: ClassTag[T]) = {
-    multiRepresenters.put(ev.runtimeClass, new RepresentTypeAsMap[T](converter))
-  }
+  /**
+   * Custom types can be serialized if conversion to Map/List is provided.
+   */
+  def addCustomRepresenter[From, To: Representation#Check](converter: From => To)(implicit ev: ClassTag[From]): Unit =
+    multiRepresenters.put(ev.runtimeClass, new RepresentType[From, To]({ x: From => converter(x) }))
 
   private class RepresentList extends Represent {
     def representData(data: Object): Node = {
@@ -53,10 +58,12 @@ class ScalaObjRepresenter extends Representer {
     }
   }
 
-  class RepresentTypeAsMap[T](converter: T => Map[String, Any]) extends Represent {
+  class RepresentType[From, To: Representation#Check](converter: From => To) extends Represent {
     def representData(data: Object): Node = {
-      val personAsMap = converter(data.asInstanceOf[T])
-      representMapping(getTag(personAsMap.getClass, Tag.MAP), personAsMap, null)
+      converter(data.asInstanceOf[From]) match {
+        case typeAsMap: Map[_, _] => representMapping(getTag(typeAsMap.getClass, Tag.MAP), typeAsMap, null)
+        case typeAsList: List[_] => representSequence(getTag(typeAsList.getClass, Tag.SEQ), typeAsList, null)
+      }
     }
   }
 }

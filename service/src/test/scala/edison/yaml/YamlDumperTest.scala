@@ -58,7 +58,7 @@ class YamlDumperTest extends SmartSpec {
       """.strip
   }
 
-  it can "be extended to support custom case classes" in {
+  it can "be extended to support custom case classes (map adapter)" in {
     case class Person(name: String, age: Int, emails: List[String])
 
     val dumper = new ScalaYamlDumper(
@@ -80,6 +80,22 @@ class YamlDumperTest extends SmartSpec {
         |  emails:
         |  - abc
         |  - def
+      """.strip
+  }
+
+  it can "be extended to support custom case classes (list adapter)" in {
+    case class Coordinates(x: Int, y: Int)
+
+    val dumper = new ScalaYamlDumper(
+      new ScalaObjRepresenter {
+        addCustomRepresenter({ coordinates: Coordinates => List(coordinates.x, coordinates.y) })
+      }, new DefaultDumperOptions
+    )
+
+    dumper.dump(Coordinates(4, 5)).trim shouldBe
+      """
+        |- 4
+        |- 5
       """.strip
   }
 }

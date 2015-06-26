@@ -2,8 +2,6 @@ package edison.journal
 
 import edison.cli.io.IO
 import edison.yaml.{ DefaultDumperOptions, ScalaObjRepresenter, ScalaYamlDumper }
-import scaldi.Injectable.inject
-import scaldi.Injector
 
 import scala.util.Try
 
@@ -17,13 +15,12 @@ class JournalEntryRepresenter extends ScalaObjRepresenter {
 
 class JournalEntryYamlDumper extends ScalaYamlDumper(new JournalEntryRepresenter, new DefaultDumperOptions)
 
-class JournalWriter(filePath: String)(implicit inj: Injector) {
-  val dumper = new JournalEntryYamlDumper
-  val io = inject[IO]
+class JournalWriter(filePath: String, io: IO) {
+  private val dumper = new JournalEntryYamlDumper
 
   def write(entry: JournalEntry): Try[Unit] = {
     val entryYaml = dumper.dump(entry)
-    val entryRepr = "# begin\n%s# end".format(entryYaml)
+    val entryRepr = "# begin\n%s# end\n".format(entryYaml)
     io.appendToFile(filePath, entryRepr)
   }
 }

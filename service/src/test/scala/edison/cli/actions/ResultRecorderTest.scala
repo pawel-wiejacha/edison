@@ -8,6 +8,7 @@ import edison.journal.JournalWriter
 import edison.model.domain.{ Project, SampleData }
 import edison.util.{ NoLogging, SmartFreeSpec }
 import org.scalamock.scalatest.MockFactory
+import edison.util.IntBytes.IntBytes
 
 import scala.util.{ Failure, Success }
 
@@ -44,5 +45,15 @@ class ResultRecorderTest extends SmartFreeSpec with MockFactory with SampleData 
         resultRecorder.storeResult(action, env).failure.exception shouldBe a[IOException]
       }
     }
+  }
+
+  "ResultEntry implements JournalEntry trait correctly" in {
+    ResultEntry(point1, 42.0).asMapping shouldBe Map(
+      "sample" -> Map(
+        "CacheSize" -> 5.MB,
+        "EvictionPolicy" -> "FIFO"
+      ),
+      "result" -> 42.0
+    )
   }
 }

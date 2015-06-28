@@ -15,10 +15,10 @@ class JournalEntryRepresenter extends ScalaObjRepresenter {
 
 class JournalEntryYamlDumper extends ScalaYamlDumper(new JournalEntryRepresenter, new DefaultDumperOptions)
 
-class JournalWriter(filePath: String, io: IO) {
+class JournalWriter(io: IO) {
   private val dumper = new JournalEntryYamlDumper
 
-  def write(entry: JournalEntry): Try[Unit] = {
+  def write(filePath: String, entry: JournalEntry): Try[Unit] = {
     val entryYaml = dumper.dump(entry)
     val entryRepr = "# begin\n%s# end\n".format(entryYaml)
     io.appendToFile(filePath, entryRepr)

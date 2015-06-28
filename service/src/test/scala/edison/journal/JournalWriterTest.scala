@@ -6,7 +6,7 @@ import org.scalamock.scalatest.MockFactory
 
 class JournalWriterTest extends SmartSpec with MockFactory {
   val ioMock = mock[IO]
-  val journalWriter = new JournalWriter("file/path", ioMock)
+  val journalWriter = new JournalWriter(ioMock)
 
   class SampleEntry extends JournalEntry {
     override def asMapping = Map("foo" -> 5, "bar" -> "baz")
@@ -24,7 +24,7 @@ class JournalWriterTest extends SmartSpec with MockFactory {
       """.strip + "\n"
     (ioMock.appendToFile _).expects("file/path", expectedEntryRepr)
 
-    journalWriter.write(new SampleEntry)
+    journalWriter.write("file/path", new SampleEntry)
   }
 
 }

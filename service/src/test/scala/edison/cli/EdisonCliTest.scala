@@ -5,7 +5,6 @@ import java.io.FileNotFoundException
 import edison.cli.actions.{ ResultRecorder, SampleGenerator }
 import edison.cli.io.IO
 import edison.model.domain._
-import edison.search.IntValue
 import edison.util.IntBytes.IntBytes
 import edison.util.SmartFreeSpec
 import edison.yaml.project.ParseError
@@ -16,11 +15,12 @@ import scala.language.postfixOps
 import scala.util.{ Failure, Success }
 
 class MockableSampleGenerator extends SampleGenerator(null)
+class MockableResultRecorder extends ResultRecorder(null)
 
 class EdisonCliTest extends SmartFreeSpec with MockFactory {
   val ioMock = mock[IO]
   val sampleGeneratorMock = mock[MockableSampleGenerator]
-  val resultRecorderMock = mock[ResultRecorder]
+  val resultRecorderMock = mock[MockableResultRecorder]
 
   def cli = {
     implicit val injector = new Module {
@@ -88,12 +88,21 @@ class EdisonCliTest extends SmartFreeSpec with MockFactory {
 
       }
       "when storing result is requested" in {
-        val action = StoreResultAction(IntValue(123), 456.0)
+        val action = StoreResultAction("{ 'CacheSize': 123 }", 456.0)
         val env = Environment(createConfig(action), sampleProject)
-        (resultRecorderMock.storeResult _).expects(action, env)
+        (resultRecorderMock.storeResult _).expects(action, env).returning(Success(()))
         cli.executeAction(env)
       }
     }
-  }
 
+    "must coordinate option parsing, project parsing and action execution" in {
+      (ioMock.readFile _).expects("projectFilePath").returning(Success(sampleProjectDefinitionYaml))
+      (resultRecorderMock.storeResult _).expects(*, *).returning(Success(()))
+      cli.main(Array("store", "-d", "projectFilePath", "-j", "journalFilePath", "-s", "sample", "-r", "0.5"))
+    }
+
+    "must have valid Dependency Injection bindings defined" in {
+      new EdisonCli()(new CliModule) // will fail in case of missing/invalid DI bindings
+    }
+  }
 }

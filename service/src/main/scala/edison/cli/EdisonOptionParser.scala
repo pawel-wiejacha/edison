@@ -1,7 +1,5 @@
 package edison.cli
 
-import edison.search.IntValue
-
 import scala.util.{ Failure, Success, Try }
 
 class EdisonOptionParser extends scopt.OptionParser[Config]("edison") {
@@ -30,10 +28,10 @@ class EdisonOptionParser extends scopt.OptionParser[Config]("edison") {
   note("")
 
   cmd("store") action { (x, c) =>
-    c.copy(action = StoreResultAction(IntValue(0), 0.0))
+    c.copy(action = StoreResultAction(null, 0.0))
   } text ("Stores the evaluation result of a sample") children (
-    opt[Int]('s', "sample") required () action { (x, c) =>
-      c.copy(action = c.action.asInstanceOf[StoreResultAction].copy(sample = IntValue(x)))
+    opt[String]('s', "sample") required () action { (x, c) =>
+      c.copy(action = c.action.asInstanceOf[StoreResultAction].copy(pointJson = x))
     } text ("Sample (in JSON format)"),
     opt[Double]('r', "result") required () action { (x, c) =>
       c.copy(action = c.action.asInstanceOf[StoreResultAction].copy(result = x))

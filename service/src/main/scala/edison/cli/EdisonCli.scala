@@ -19,10 +19,11 @@ object CliMain {
 
 /** Edison command line interface */
 class EdisonCli(implicit val injector: Injector) extends Injectable with StrictLogging {
-  val io = inject[IO]
-  val sampleGenerator = inject[SampleGenerator]
-  val resultRecorder = inject[ResultRecorder]
-  val optionParser = inject[EdisonOptionParser]
+  private val io = inject[IO]
+  private val sampleGenerator = inject[SampleGenerator]
+  private val resultRecorder = inject[ResultRecorder]
+  private val optionParser = inject[EdisonOptionParser]
+  private val projectParser = inject[ProjectDefinitionParser]
 
   def main(args: Array[String]): Unit = {
     createEnvironment(args) match {
@@ -36,7 +37,7 @@ class EdisonCli(implicit val injector: Injector) extends Injectable with StrictL
   def executeAction(env: Environment): Unit = {
     env.config.action match {
       case GenerateSampleAction() => sampleGenerator.generateSample(env)
-      case action: StoreResultAction => resultRecorder.storeResult(action, env)
+      case action: StoreResultAction => resultRecorder.storeResult(action, env).get
     }
   }
 
@@ -48,7 +49,6 @@ class EdisonCli(implicit val injector: Injector) extends Injectable with StrictL
   }
 
   def readProjectDefinitionFile(config: Config): Try[Project] = {
-    val projectParser = new ProjectDefinitionParser
     for {
       definitionYaml <- io.readFile(config.definitionFilePath)
       project <- projectParser.parse(definitionYaml)

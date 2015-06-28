@@ -39,8 +39,8 @@ class EdisonOptionParserTest extends SmartSpec {
   }
 
   it must "accept `store` command" in {
-    val ParseResult(config, errors) = parse("store", "-d", "file1", "-j", "file2", "-s", "33", "-r", "0.5")
-    config.value shouldBe Config("file1", "file2", StoreResultAction(IntValue(33), 0.5))
+    val ParseResult(config, errors) = parse("store", "-d", "file1", "-j", "file2", "-s", "sample", "-r", "0.5")
+    config.value shouldBe Config("file1", "file2", StoreResultAction("sample", 0.5))
     errors shouldBe empty
   }
 

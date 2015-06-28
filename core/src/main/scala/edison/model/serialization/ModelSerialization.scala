@@ -21,7 +21,7 @@ trait PointSerializer extends JsonSerializer[Point] {
   def paramSerializer: ParamSerializer
 
   override def serialize(point: Point): JObject =
-    JObject(point.params.map(paramSerializer.serializeAsField(_)).toList)
+    JObject(point.params.map(paramSerializer.serializeAsField).toList)
 }
 
 object DefaultSerializers {

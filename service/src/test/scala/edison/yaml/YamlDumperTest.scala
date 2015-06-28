@@ -11,6 +11,10 @@ class YamlDumperTest extends SmartSpec {
     dump(123) shouldBe "123"
   }
 
+  it must "dump doubles" in {
+    dump(123.42) shouldBe "123.42"
+  }
+
   it must "dump strings" in {
     dump("abc") shouldBe "abc"
   }
